@@ -15,14 +15,6 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Servlet que usa el ADMIN para cargar el resultado de un partido.
- *
- * URL: /ResultadoServlet
- *
- * - POST -> guarda el resultado (goles local y visitante) de un partido puntual
- *           Parámetros esperados: partidoId, golesLocal, golesVisitante
- */
 @WebServlet("/ResultadoServlet")
 public class ResultadoServlet extends HttpServlet {
 
@@ -37,7 +29,6 @@ public class ResultadoServlet extends HttpServlet {
 
         Map<String, Object> resultado = new HashMap<>();
 
-        // ===== Verificamos que quien pide esto sea el ADMIN =====
         HttpSession session = request.getSession(false);
         Usuario usuario = (session != null) ? (Usuario) session.getAttribute("usuario") : null;
 
@@ -53,7 +44,6 @@ public class ResultadoServlet extends HttpServlet {
             int golesLocal = Integer.parseInt(request.getParameter("golesLocal"));
             int golesVisitante = Integer.parseInt(request.getParameter("golesVisitante"));
 
-            // Validamos que los goles no sean negativos
             if (golesLocal < 0 || golesVisitante < 0) {
                 resultado.put("exito", false);
                 resultado.put("mensaje", "Los goles no pueden ser negativos");

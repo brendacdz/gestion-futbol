@@ -15,12 +15,6 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Servlet que maneja el login de clubes y del administrador.
- * Recibe los datos por AJAX (POST) y responde en formato JSON.
- *
- * URL: /LoginServlet
- */
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
 
@@ -31,7 +25,6 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Le decimos al navegador que la respuesta va a ser JSON, en UTF-8
         response.setContentType("application/json;charset=UTF-8");
 
         String username = request.getParameter("username");
@@ -44,8 +37,6 @@ public class LoginServlet extends HttpServlet {
             Usuario usuario = usuarioDAO.login(username, password);
 
             if (usuario != null) {
-                // Login correcto: guardamos el usuario en la sesión
-                // (así en los próximos pedidos sabemos quién está conectado)
                 HttpSession session = request.getSession();
                 session.setAttribute("usuario", usuario);
 
@@ -54,7 +45,6 @@ public class LoginServlet extends HttpServlet {
                 resultado.put("nombreClub", usuario.getNombreClub());
                 resultado.put("clubId", usuario.getId());
             } else {
-                // Usuario o contraseña incorrectos
                 resultado.put("exito", false);
                 resultado.put("mensaje", "Usuario o contraseña incorrectos");
             }
@@ -62,16 +52,12 @@ public class LoginServlet extends HttpServlet {
         } catch (SQLException e) {
             resultado.put("exito", false);
             resultado.put("mensaje", "Error de conexión con la base de datos");
-            e.printStackTrace(); // queda registrado en la consola de Eclipse para detectar el error
+            e.printStackTrace();
         }
 
-        // Convertimos el Map a JSON y lo escribimos en la respuesta
         response.getWriter().write(gson.toJson(resultado));
     }
 
-    /**
-     * Servlet también usado para cerrar sesión (logout), llamando por GET.
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -81,7 +67,7 @@ public class LoginServlet extends HttpServlet {
         if ("logout".equals(accion)) {
             HttpSession session = request.getSession(false);
             if (session != null) {
-                session.invalidate(); // cierra y borra la sesión actual
+                session.invalidate();
             }
 
             response.setContentType("application/json;charset=UTF-8");

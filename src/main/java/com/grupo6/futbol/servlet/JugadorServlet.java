@@ -17,17 +17,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Servlet que maneja el alta y listado de jugadores de un club.
- * Cada club puede cargar hasta 23 jugadores.
- *
- * URL: /JugadorServlet
- *
- * Acciones (parámetro "accion"):
- * - "listar"  (GET)  -> devuelve los jugadores del club logueado
- * - "guardar" (POST) -> agrega un jugador nuevo
- * - "eliminar"(POST) -> elimina un jugador por id
- */
 @WebServlet("/JugadorServlet")
 public class JugadorServlet extends HttpServlet {
 
@@ -41,7 +30,6 @@ public class JugadorServlet extends HttpServlet {
 
         response.setContentType("application/json;charset=UTF-8");
 
-        // Verificamos que haya un club logueado (no admin)
         HttpSession session = request.getSession(false);
         Usuario usuario = (session != null) ? (Usuario) session.getAttribute("usuario") : null;
 
@@ -93,14 +81,12 @@ public class JugadorServlet extends HttpServlet {
 
         try {
             if ("eliminar".equals(accion)) {
-                // Eliminar un jugador existente
                 int id = Integer.parseInt(request.getParameter("id"));
                 jugadorDAO.eliminar(id);
 
                 resultado.put("exito", true);
 
             } else {
-                // Agregar un jugador nuevo: primero validamos el límite de 23
                 int cantidadActual = jugadorDAO.contarPorClub(usuario.getId());
 
                 if (cantidadActual >= MAXIMO_JUGADORES) {
@@ -110,7 +96,6 @@ public class JugadorServlet extends HttpServlet {
                     return;
                 }
 
-                // Armamos el objeto Jugador con los datos del formulario
                 Jugador jugador = new Jugador();
                 jugador.setClubId(usuario.getId());
                 jugador.setNombre(request.getParameter("nombre"));

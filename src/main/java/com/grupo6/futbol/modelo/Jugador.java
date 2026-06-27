@@ -1,25 +1,19 @@
 package com.grupo6.futbol.modelo;
 
-/**
- * Clase que representa a un jugador de un club.
- * Cada club puede tener hasta 23 jugadores.
- */
 public class Jugador {
 
     private int id;
-    private int clubId;       // id del club (usuario) al que pertenece
+    private int clubId;
     private String nombre;
     private int edad;
-    private double altura;    // en metros, ej: 1.78
-    private double peso;      // en kilos, ej: 75.5
-    private int habilidad;    // valor del 1 al 100
-    private String puesto;    // Arquero, Defensor, Mediocampista o Delantero
+    private double altura;
+    private double peso;
+    private int habilidad;
+    private String puesto;
 
-    // Constructor vacío
     public Jugador() {
     }
 
-    // Constructor con todos los datos
     public Jugador(int id, int clubId, String nombre, int edad, double altura,
                     double peso, int habilidad, String puesto) {
         this.id = id;
@@ -31,8 +25,6 @@ public class Jugador {
         this.habilidad = habilidad;
         this.puesto = puesto;
     }
-
-    // ===== Getters y Setters =====
 
     public int getId() {
         return id;

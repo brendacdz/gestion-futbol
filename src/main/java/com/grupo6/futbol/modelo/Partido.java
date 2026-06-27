@@ -1,26 +1,20 @@
 package com.grupo6.futbol.modelo;
 
-/**
- * Clase que representa un partido del campeonato (fixture ida y vuelta).
- * Mientras no se jugó, los goles quedan en null (sin valor).
- */
 public class Partido {
 
     private int id;
     private int clubLocalId;
     private int clubVisitanteId;
-    private String nombreClubLocal;       // se completa al consultar, para mostrar en pantalla
-    private String nombreClubVisitante;   // se completa al consultar, para mostrar en pantalla
-    private Integer golesLocal;           // Integer (no int) para poder representar "sin jugar" como null
+    private String nombreClubLocal;
+    private String nombreClubVisitante;
+    private Integer golesLocal;
     private Integer golesVisitante;
-    private int fechaJornada;             // número de fecha del campeonato: 1, 2, 3...
+    private int fechaJornada;
     private boolean jugado;
 
-    // Constructor vacío
     public Partido() {
     }
 
-    // Constructor con los datos básicos (para cuando se genera el fixture)
     public Partido(int clubLocalId, int clubVisitanteId, int fechaJornada) {
         this.clubLocalId = clubLocalId;
         this.clubVisitanteId = clubVisitanteId;
@@ -29,8 +23,6 @@ public class Partido {
         this.golesLocal = null;
         this.golesVisitante = null;
     }
-
-    // ===== Getters y Setters =====
 
     public int getId() {
         return id;

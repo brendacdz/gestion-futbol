@@ -14,14 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Servlet de acceso PUBLICO (no requiere login) que devuelve la
- * tabla de posiciones del campeonato, ya calculada y ordenada por puntos.
- *
- * URL: /TablaPosicionesServlet
- *
- * - GET -> devuelve la tabla de posiciones en formato JSON
- */
 @WebServlet("/TablaPosicionesServlet")
 public class TablaPosicionesServlet extends HttpServlet {
 

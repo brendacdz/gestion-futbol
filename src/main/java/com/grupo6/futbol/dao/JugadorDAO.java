@@ -10,15 +10,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Clase encargada de todas las consultas SQL relacionadas con la tabla "jugadores".
- */
 public class JugadorDAO {
 
-    /**
-     * Guarda un jugador nuevo en la base de datos.
-     * Antes de guardar, en el Servlet hay que validar que el club no tenga ya 23 jugadores.
-     */
     public void guardar(Jugador jugador) throws SQLException {
 
         String sql = "INSERT INTO jugadores (club_id, nombre, edad, altura, peso, habilidad, puesto) "
@@ -39,9 +32,6 @@ public class JugadorDAO {
         }
     }
 
-    /**
-     * Devuelve la lista de jugadores de un club específico.
-     */
     public List<Jugador> listarPorClub(int clubId) throws SQLException {
 
         List<Jugador> jugadores = new ArrayList<>();
@@ -62,10 +52,6 @@ public class JugadorDAO {
         return jugadores;
     }
 
-    /**
-     * Cuenta cuántos jugadores tiene cargados un club.
-     * Se usa para validar que no supere el límite de 23.
-     */
     public int contarPorClub(int clubId) throws SQLException {
 
         String sql = "SELECT COUNT(*) AS total FROM jugadores WHERE club_id = ?";
@@ -85,9 +71,6 @@ public class JugadorDAO {
         return 0;
     }
 
-    /**
-     * Elimina un jugador por su id.
-     */
     public void eliminar(int id) throws SQLException {
 
         String sql = "DELETE FROM jugadores WHERE id = ?";
@@ -100,9 +83,6 @@ public class JugadorDAO {
         }
     }
 
-    /**
-     * Actualiza los datos de un jugador existente.
-     */
     public void actualizar(Jugador jugador) throws SQLException {
 
         String sql = "UPDATE jugadores SET nombre = ?, edad = ?, altura = ?, peso = ?, "
@@ -123,9 +103,6 @@ public class JugadorDAO {
         }
     }
 
-    /**
-     * Método auxiliar privado: convierte una fila del ResultSet en un objeto Jugador.
-     */
     private Jugador mapearJugador(ResultSet rs) throws SQLException {
         Jugador jugador = new Jugador();
         jugador.setId(rs.getInt("id"));

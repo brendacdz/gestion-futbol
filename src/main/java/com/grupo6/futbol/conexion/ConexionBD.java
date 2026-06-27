@@ -1,32 +1,45 @@
 package com.grupo6.futbol.conexion;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
-/**
- * Clase encargada de abrir la conexión con la base de datos MySQL.
- * Usa los datos por defecto de XAMPP: usuario "root" sin contraseña.
- */
 public class ConexionBD {
 
-    // Datos de conexión a MySQL (XAMPP)
-    private static final String URL = "jdbc:mysql://localhost:3306/gestion_futbol?useSSL=false&serverTimezone=UTC";
-    private static final String USUARIO = "root";
-    private static final String PASSWORD = ""; // XAMPP por defecto no tiene contraseña
+    private static String url;
+    private static String usuario;
+    private static String password;
 
-    /**
-     * Abre y devuelve una conexión nueva a la base de datos.
-     * Cada vez que se llama a este método, se abre una conexión distinta.
-     */
+    static {
+        try (InputStream input = ConexionBD.class.getClassLoader()
+                .getResourceAsStream("database.properties")) {
+
+            if (input == null) {
+                throw new RuntimeException("No se encontró el archivo database.properties en resources");
+            }
+
+            Properties propiedades = new Properties();
+            propiedades.load(input);
+
+            url = propiedades.getProperty("db.url");
+            usuario = propiedades.getProperty("db.usuario");
+            password = propiedades.getProperty("db.password");
+
+        } catch (IOException e) {
+            throw new RuntimeException("Error al leer database.properties", e);
+        }
+    }
+
     public static Connection obtenerConexion() throws SQLException {
         try {
-            // Carga el driver de MySQL (el "traductor" entre Java y MySQL)
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
             throw new SQLException("No se encontró el driver de MySQL. Verificar dependencia en pom.xml", e);
         }
 
-        return DriverManager.getConnection(URL, USUARIO, PASSWORD);
+        return DriverManager.getConnection(url, usuario, password);
     }
 }

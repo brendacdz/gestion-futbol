@@ -18,15 +18,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Servlet que usa el ADMIN para generar el fixture del campeonato
- * (todos contra todos, ida y vuelta) y para consultar los partidos generados.
- *
- * URL: /FixtureServlet
- *
- * - GET  -> devuelve la lista de partidos del fixture (acceso público, cualquiera puede verlo)
- * - POST -> genera el fixture nuevo (solo el ADMIN puede hacerlo)
- */
 @WebServlet("/FixtureServlet")
 public class FixtureServlet extends HttpServlet {
 
@@ -65,7 +56,6 @@ public class FixtureServlet extends HttpServlet {
 
         Map<String, Object> resultado = new HashMap<>();
 
-        // ===== Verificamos que quien pide esto sea el ADMIN =====
         HttpSession session = request.getSession(false);
         Usuario usuario = (session != null) ? (Usuario) session.getAttribute("usuario") : null;
 
@@ -80,7 +70,6 @@ public class FixtureServlet extends HttpServlet {
             UsuarioDAO usuarioDAO = new UsuarioDAO();
             List<Usuario> clubes = usuarioDAO.listarClubes();
 
-            // Necesitamos al menos 2 clubes para armar un campeonato
             if (clubes.size() < 2) {
                 resultado.put("exito", false);
                 resultado.put("mensaje", "Debe haber al menos 2 clubes registrados para generar el fixture");
@@ -90,7 +79,6 @@ public class FixtureServlet extends HttpServlet {
 
             PartidoDAO partidoDAO = new PartidoDAO();
 
-            // Antes de generar uno nuevo, borramos el fixture anterior (si existía)
             partidoDAO.borrarFixture();
             partidoDAO.generarFixture(clubes);
 
