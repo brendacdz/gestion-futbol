@@ -17,7 +17,7 @@
 
     <dependencies>
 
-        <!-- Servlets y JSP: permite crear las clases Servlet (controladores) -->
+        
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
@@ -25,21 +25,21 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- JSTL: para usar lógica simple (if, for) dentro de los archivos JSP -->
+      
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
             <version>1.2</version>
         </dependency>
 
-        <!-- Conector de MySQL: permite que Java se conecte a la base de datos -->
+       
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.33</version>
         </dependency>
 
-        <!-- Gson: convierte objetos Java a JSON (y viceversa) para las respuestas AJAX -->
+       
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
@@ -51,7 +51,7 @@
     <build>
         <finalName>gestion-futbol</finalName>
         <plugins>
-            <!-- Plugin para que el WAR no exija obligatoriamente el web.xml -->
+            
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
