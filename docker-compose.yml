@@ -2,9 +2,7 @@ version: "3.8"
 
 services:
 
-  # ============================================================
-  # Servicio de base de datos MySQL
-  # ============================================================
+
   db:
     image: mysql:8.0
     container_name: futbol-mysql
@@ -13,7 +11,7 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: gestion_futbol
     ports:
-      - "3307:3306"   # 3307 en tu compu -> 3306 dentro del contenedor (evita choque si ya tenes MySQL local con XAMPP)
+      - "3307:3306"  
     volumes:
       - ./script_base_datos_sin_comentarios.sql:/docker-entrypoint-initdb.d/init.sql
       - futbol_db_data:/var/lib/mysql
@@ -23,9 +21,6 @@ services:
       timeout: 5s
       retries: 10
 
-  # ============================================================
-  # Servicio de la aplicacion Java (Tomcat)
-  # ============================================================
   app:
     build: .
     container_name: futbol-app
