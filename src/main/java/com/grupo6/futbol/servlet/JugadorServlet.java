@@ -86,6 +86,20 @@ public class JugadorServlet extends HttpServlet {
 
                 resultado.put("exito", true);
 
+            } else if ("editar".equals(accion)) {
+                Jugador jugador = new Jugador();
+                jugador.setId(Integer.parseInt(request.getParameter("id")));
+                jugador.setNombre(request.getParameter("nombre"));
+                jugador.setEdad(Integer.parseInt(request.getParameter("edad")));
+                jugador.setAltura(Double.parseDouble(request.getParameter("altura")));
+                jugador.setPeso(Double.parseDouble(request.getParameter("peso")));
+                jugador.setHabilidad(Integer.parseInt(request.getParameter("habilidad")));
+                jugador.setPuesto(request.getParameter("puesto"));
+
+                jugadorDAO.actualizar(jugador);
+
+                resultado.put("exito", true);
+
             } else {
                 int cantidadActual = jugadorDAO.contarPorClub(usuario.getId());
 

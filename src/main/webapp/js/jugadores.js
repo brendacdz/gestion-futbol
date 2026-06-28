@@ -1,6 +1,9 @@
 $(document).ready(function() {
 	cargarJugadores();
 });
+
+let idEnEdicion = null;
+
 function cargarJugadores() {
 	$.ajax({
 		url: "JugadorServlet",
@@ -20,6 +23,10 @@ function cargarJugadores() {
                             <td>${jugador.habilidad}</td>
                             <td>${jugador.puesto}</td>
                             <td>
+                                <button class="btn btn-primary btn-sm"
+                                    onclick='editarJugador(${JSON.stringify(jugador)})'>
+                                    Editar
+                                </button>
                                 <button class="btn btn-danger btn-sm"
                                     onclick="eliminarJugador(${jugador.id})">
                                     Eliminar
@@ -59,24 +66,32 @@ function guardarJugador() {
 		alert("Complete todos los campos.");
 		return;
 	}
+
+	let datosEnvio = {
+		accion: idEnEdicion ? "editar" : "guardar",
+		nombre: nombre,
+		edad: edad,
+		altura: altura,
+		peso: peso,
+		habilidad: habilidad,
+		puesto: puesto
+	};
+
+	if (idEnEdicion) {
+		datosEnvio.id = idEnEdicion;
+	}
+
 	$.ajax({
 		url: "JugadorServlet",
 		type: "POST",
-		data: {
-			accion: "guardar",
-			nombre: nombre,
-			edad: edad,
-			altura: altura,
-			peso: peso,
-			habilidad: habilidad,
-			puesto: puesto
-		},
+		data: datosEnvio,
 		dataType: "json",
 		success: function(respuesta) {
 			if (respuesta.exito) {
+				let mensaje = idEnEdicion ? "Jugador actualizado correctamente." : "Jugador guardado correctamente.";
 				limpiarFormulario();
 				cargarJugadores();
-				alert("Jugador guardado correctamente.");
+				alert(mensaje);
 			} else {
 				alert(respuesta.mensaje);
 			}
@@ -86,6 +101,19 @@ function guardarJugador() {
 			alert("Error al guardar el jugador.");
 		}
 	});
+}
+
+function editarJugador(jugador) {
+	idEnEdicion = jugador.id;
+
+	$("#nombre").val(jugador.nombre);
+	$("#edad").val(jugador.edad);
+	$("#altura").val(jugador.altura);
+	$("#peso").val(jugador.peso);
+	$("#habilidad").val(jugador.habilidad);
+	$("#puesto").val(jugador.puesto);
+
+	$("#btnGuardarJugador").text("Actualizar jugador");
 }
 
 function eliminarJugador(id) {
@@ -115,11 +143,15 @@ function eliminarJugador(id) {
 }
 function limpiarFormulario() {
 
+	idEnEdicion = null;
+
 	$("#nombre").val("");
 	$("#edad").val("");
 	$("#altura").val("");
 	$("#peso").val("");
 	$("#habilidad").val("");
 	$("#puesto").val("");
+
+	$("#btnGuardarJugador").text("Agregar jugador");
 
 }
